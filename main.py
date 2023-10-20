@@ -1,7 +1,7 @@
 import sys
-from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QTextEdit
-from PySide2.QtCore import QTimer
-from PySide2.QtGui import QTextCursor, QTextCharFormat, QFont
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QTextEdit, QAbstractScrollArea
+from PySide6.QtCore import QTimer, Qt
+from PySide6.QtGui import QTextCursor, QTextCharFormat, QFont
 
 indent = '  '
 refresh_rate_ms = 500
@@ -29,6 +29,8 @@ class MarkdownCompilerApp(QMainWindow):
         self.text_output = QTextEdit()
         self.text_output.setReadOnly(True)
         layout.addWidget(self.text_output)
+        self.text_output.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
 
         central_widget.setLayout(layout)
 
@@ -37,9 +39,6 @@ class MarkdownCompilerApp(QMainWindow):
         self.show()
 
     def update_output(self):
-        # Clear the text_output widget
-        self.text_output.clear()
-
         # Get the input text from the text input widget
         input_text = self.text_input.toPlainText()
 
@@ -48,6 +47,9 @@ class MarkdownCompilerApp(QMainWindow):
 
         # Split input text into lines
         lines = input_text.split('\n')
+
+        # Clear the text_output widget
+        self.text_output.clear()
 
         # Iterate through the lines
         for line in lines:
@@ -89,9 +91,17 @@ class MarkdownCompilerApp(QMainWindow):
             cursor = QTextCursor(self.text_output.document())
             cursor.movePosition(QTextCursor.End)
             cursor.insertText(line_text, char_format)
-
             # Add a line break to separate lines
-            cursor.insertText("\n")
+            cursor.insertText("\n")            
+
+        input_scroll_bar_position = self.text_input.verticalScrollBar().value()
+        self.text_output.verticalScrollBar().setValue(input_scroll_bar_position)
+
+
+        # input_cursor_position = self.text_input.textCursor().position()
+        # output_cursor = self.text_output.textCursor()
+        # output_cursor.setPosition(input_cursor_position)
+        # self.text_output.setTextCursor(output_cursor)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
