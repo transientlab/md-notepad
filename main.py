@@ -4,7 +4,7 @@ from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QTextCursor, QTextCharFormat, QFont
 
 indent = '  '
-refresh_rate_ms = 500
+refresh_rate_ms = 100
 
 class MarkdownCompilerApp(QMainWindow):
     def __init__(self):
@@ -106,4 +106,4 @@ class MarkdownCompilerApp(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MarkdownCompilerApp()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
