@@ -1,5 +1,5 @@
 qt-venv/*
 build/*
 dist/*
-
+venv/*
 .DS_Store
